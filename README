@@ -1,0 +1,53 @@
+
+AXI BFM standard protocol checker
+  supported
+      read/write phase check
+      normal protocol check (valid/ready)
+      id tag mapping check (addr/data/resp) has the same id
+      transfer read/write check, (only for slave side) like bist check
+      TLM analysis port, user can use it to hook their third part golden design. like SystemC TLM 2.0 port or DPI interface ...,
+  unsupported
+      Qos(priority)
+      region
+      user info
+      cache
+      protect ...
+      atomic check
+
+  folder
+    ./dpi         : SystemVerilog DPI interface
+    ./examples    : example
+    ./pli         : Verilig PLI interface
+    ./v           : Design under test (DUT)
+    ./sv          : SystemVerilog UVM class
+    ./log         : simulation results
+    ./rpt         : simulation rpt
+
+How to run the example (1 virtual master to 1 DUT slave)
+
+1. set up your test env
+  1.1 prepare your DUT and link it to our test env,
+      for example we use 1 Virtual Master to 1 DUT slave
+
+      check ./v/axi_slave.v                                   # dut slave
+      check ./example/virtual_master_to_dut_slave/dut_dummy.v # link dut to test env
+      check ./example/virtual_master_to_dut_slave/demo_top.sv # top module contains DUT and Tester
+
+  1.2 Memory map table, how many Masters/Slaves, Master/Slave connection ....
+
+      check ./examples/virtual_master_to_dut_slave/demo_conf.sv
+
+  1.3 define your test suites
+      in this example, we use 1 read after 1 write to check the memory can read/write supported
+
+      check ./examples/virtual_master_to_dut_slave/demo_axi_master_seq_lib.sv
+      check ./examples/virtual_master_to_dut_slave/demo_lib.sv
+      check ./examples/virtual_master_to_dut_slave/demo_tb.sv
+
+2. how to run it
+  tools requirement
+    irun > Version 10
+    python > Version 2.7
+  python ./run.py
+
+
